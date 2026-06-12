@@ -65,6 +65,10 @@ npm install
 1. Create a project at [supabase.com](https://supabase.com).
 2. Open **SQL Editor**, paste the whole of
    `supabase/migrations/0001_init.sql`, and run it.
+3. Then run `supabase/migrations/0002_agent_profiles.sql` the same way —
+   it adds agent avatars (`avatars` storage bucket) and self-service profile
+   editing (name/photo only; role and channel access stay admin-managed),
+   and is required by the `/profile` and `/dashboard` pages.
 
 ### 3. Create agent logins
 
