@@ -7,6 +7,7 @@ import type { Agent, Channel, Conversation } from "@/lib/types";
 import Avatar from "@/components/inbox/Avatar";
 import ChannelBadge from "@/components/inbox/ChannelBadge";
 import SignIn from "@/components/inbox/SignIn";
+import Sidebar from "@/components/Sidebar";
 
 interface SessionUser {
   id: string;
@@ -120,18 +121,25 @@ export default function DashboardPage() {
     id ? agents.find((a) => a.id === id)?.name ?? "Unknown" : "Unassigned";
 
   return (
-    <div className="mx-auto max-w-5xl space-y-6 p-6">
-      <div className="flex items-center justify-between">
-        <div>
-          <h1 className="text-lg font-semibold">Admin dashboard</h1>
-          <p className="text-xs text-zinc-500">
-            Live overview of all channels and the team
-          </p>
-        </div>
-        <Link href="/" className="text-xs text-zinc-600 hover:underline">
-          ← Back to inbox
-        </Link>
-      </div>
+    <div className="flex h-screen">
+      <Sidebar
+        active="dashboard"
+        agent={agent}
+        email={user.email}
+        onSignOut={async () => {
+          await supabase.auth.signOut();
+          setUser(null);
+          setAgent(null);
+        }}
+      />
+      <main className="flex-1 overflow-y-auto">
+        <div className="mx-auto max-w-5xl space-y-6 p-6">
+          <div>
+            <h1 className="text-lg font-semibold">Admin dashboard</h1>
+            <p className="text-xs text-zinc-500">
+              Live overview of all channels and the team
+            </p>
+          </div>
 
       <div className="grid grid-cols-2 gap-3 sm:grid-cols-3 lg:grid-cols-6">
         {[
@@ -226,6 +234,8 @@ export default function DashboardPage() {
           </ul>
         )}
       </section>
+        </div>
+      </main>
     </div>
   );
 }

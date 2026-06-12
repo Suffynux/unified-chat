@@ -1,11 +1,12 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
-import Link from "next/link";
 import { supabaseBrowser } from "@/lib/supabase";
 import type { Agent } from "@/lib/types";
 import Avatar from "@/components/inbox/Avatar";
 import SignIn from "@/components/inbox/SignIn";
+import Sidebar from "@/components/Sidebar";
+import PasswordInput from "@/components/ui/PasswordInput";
 
 interface SessionUser {
   id: string;
@@ -160,13 +161,20 @@ export default function ProfilePage() {
   }
 
   return (
-    <div className="mx-auto max-w-lg space-y-4 p-6">
-      <div className="flex items-center justify-between">
-        <h1 className="text-lg font-semibold">My profile</h1>
-        <Link href="/" className="text-xs text-zinc-600 hover:underline">
-          ← Back to inbox
-        </Link>
-      </div>
+    <div className="flex h-screen">
+      <Sidebar
+        active="profile"
+        agent={agent}
+        email={user.email}
+        onSignOut={async () => {
+          await supabase.auth.signOut();
+          setUser(null);
+          setAgent(null);
+        }}
+      />
+      <main className="flex-1 overflow-y-auto">
+        <div className="mx-auto max-w-lg space-y-4 p-6">
+          <h1 className="text-lg font-semibold">My profile</h1>
 
       {notice && (
         <p
@@ -239,21 +247,19 @@ export default function ProfilePage() {
       <section className="rounded-lg border border-zinc-200 bg-white p-5">
         <h2 className="mb-3 text-sm font-semibold">Change password</h2>
         <form onSubmit={handleChangePassword} className="space-y-3">
-          <input
-            type="password"
+          <PasswordInput
             placeholder="New password"
             value={newPassword}
-            onChange={(e) => setNewPassword(e.target.value)}
+            onChange={setNewPassword}
             required
-            className="w-full rounded border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none"
+            autoComplete="new-password"
           />
-          <input
-            type="password"
+          <PasswordInput
             placeholder="Confirm new password"
             value={confirmPassword}
-            onChange={(e) => setConfirmPassword(e.target.value)}
+            onChange={setConfirmPassword}
             required
-            className="w-full rounded border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none"
+            autoComplete="new-password"
           />
           <button
             type="submit"
@@ -264,6 +270,8 @@ export default function ProfilePage() {
           </button>
         </form>
       </section>
+        </div>
+      </main>
     </div>
   );
 }

@@ -2,8 +2,8 @@ import type { Metadata } from "next";
 import "./globals.css";
 
 export const metadata: Metadata = {
-  title: "Unified Inbox",
-  description: "Messenger, Instagram and email support inbox",
+  title: "Gomila — Unified Inbox",
+  description: "Gomila support inbox for Messenger, Instagram and email",
 };
 
 export default function RootLayout({

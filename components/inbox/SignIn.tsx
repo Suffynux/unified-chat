@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import type { SupabaseClient } from "@supabase/supabase-js";
+import PasswordInput from "@/components/ui/PasswordInput";
 
 export default function SignIn({
   supabase,
@@ -32,36 +33,43 @@ export default function SignIn({
   }
 
   return (
-    <div className="flex h-screen items-center justify-center">
+    <div className="flex h-screen items-center justify-center bg-zinc-950">
       <form
         onSubmit={handleSubmit}
-        className="w-80 space-y-3 rounded-lg border border-zinc-200 bg-white p-6"
+        className="w-80 space-y-4 rounded-xl border border-zinc-200 bg-white p-6 shadow-xl"
       >
-        <h1 className="text-lg font-semibold">Agent sign in</h1>
-        <p className="text-xs text-zinc-500">
-          Use a Supabase Auth user that has a matching row in the agents table.
-        </p>
+        <div className="flex flex-col items-center gap-2 pb-1">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/logo_luxury_footwear.avif"
+            alt="Gomila"
+            className="h-14 w-14 rounded-lg object-cover"
+          />
+          <h1 className="text-lg font-semibold tracking-wide">GOMILA</h1>
+          <p className="text-xs text-zinc-500">
+            Sign in to the support inbox
+          </p>
+        </div>
         <input
           type="email"
           required
           value={email}
           onChange={(e) => setEmail(e.target.value)}
-          placeholder="email"
-          className="w-full rounded border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none"
+          placeholder="Email"
+          autoComplete="email"
+          className="w-full rounded-md border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-900 focus:outline-none"
         />
-        <input
-          type="password"
-          required
+        <PasswordInput
           value={password}
-          onChange={(e) => setPassword(e.target.value)}
-          placeholder="password"
-          className="w-full rounded border border-zinc-300 px-3 py-2 text-sm focus:border-zinc-500 focus:outline-none"
+          onChange={setPassword}
+          required
+          autoComplete="current-password"
         />
         {error && <p className="text-xs text-red-600">{error}</p>}
         <button
           type="submit"
           disabled={busy}
-          className="w-full rounded bg-zinc-900 py-2 text-sm font-medium text-white disabled:opacity-40"
+          className="w-full rounded-md bg-zinc-900 py-2 text-sm font-medium text-white hover:bg-zinc-800 disabled:opacity-40"
         >
           {busy ? "Signing in…" : "Sign in"}
         </button>
