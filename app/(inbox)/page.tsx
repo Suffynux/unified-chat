@@ -1,8 +1,10 @@
 "use client";
 
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import Link from "next/link";
 import { supabaseBrowser } from "@/lib/supabase";
 import type { Agent, Conversation, Message } from "@/lib/types";
+import Avatar from "@/components/inbox/Avatar";
 import ChannelBadge from "@/components/inbox/ChannelBadge";
 import ConversationList from "@/components/inbox/ConversationList";
 import ReplyBox from "@/components/inbox/ReplyBox";
@@ -163,10 +165,39 @@ export default function InboxPage() {
     <div className="flex h-screen">
       <aside className="flex w-80 shrink-0 flex-col border-r border-zinc-200 bg-white">
         <header className="border-b border-zinc-200 p-4">
-          <h1 className="text-sm font-semibold">Inbox</h1>
-          <p className="truncate text-xs text-zinc-500">
-            {agent ? `${agent.name} (${agent.role})` : user.email}
-          </p>
+          <div className="flex items-center gap-3">
+            <Avatar
+              name={agent?.name ?? user.email}
+              url={agent?.avatar_url}
+              size={36}
+            />
+            <div className="min-w-0 flex-1">
+              <h1 className="text-sm font-semibold">Inbox</h1>
+              <p className="truncate text-xs text-zinc-500">
+                {agent ? `${agent.name} (${agent.role})` : user.email}
+              </p>
+            </div>
+          </div>
+          <nav className="mt-3 flex gap-3 text-xs text-zinc-600">
+            <Link href="/profile" className="hover:underline">
+              Profile
+            </Link>
+            {agent?.role === "admin" && (
+              <Link href="/dashboard" className="hover:underline">
+                Dashboard
+              </Link>
+            )}
+            <button
+              onClick={async () => {
+                await supabase.auth.signOut();
+                setUser(null);
+                setAgent(null);
+              }}
+              className="ml-auto text-zinc-400 hover:text-zinc-700 hover:underline"
+            >
+              Sign out
+            </button>
+          </nav>
         </header>
         <div className="flex-1 overflow-y-auto">
           <ConversationList
