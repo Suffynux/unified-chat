@@ -50,6 +50,7 @@ export interface Agent {
   name: string;
   role: "admin" | "agent";
   allowed_channels: Channel[];
+  avatar_url: string | null;
 }
 
 export interface Contact {
