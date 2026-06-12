@@ -1,9 +1,10 @@
 import type { Channel } from "@/lib/types";
 
+// Monochrome variants: distinguishable by weight, not color.
 const styles: Record<Channel, string> = {
-  messenger: "bg-blue-100 text-blue-700",
-  instagram: "bg-pink-100 text-pink-700",
-  email: "bg-amber-100 text-amber-700",
+  messenger: "bg-zinc-900 text-white",
+  instagram: "bg-zinc-200 text-zinc-800",
+  email: "border border-zinc-300 bg-white text-zinc-600",
 };
 
 export default function ChannelBadge({ channel }: { channel: Channel }) {
